@@ -1,6 +1,6 @@
 import { _fetch } from '../../utils/fetch'
 import { jsonPointerGet } from '../../helpers'
-import { defineNuxtPlugin, useAuthState } from '#imports'
+import { defineNuxtPlugin, useAuthState, useRuntimeConfig } from '#imports'
 export default defineNuxtPlugin({
   name: 'refresh-token-plugin',
   enforce: 'pre',
@@ -8,7 +8,7 @@ export default defineNuxtPlugin({
     // TODO: get rid of duplicate code
     const { rawToken, rawRefreshToken, refreshToken, lastRefreshedAt } = useAuthState()
     if (refreshToken.value) {
-      const config = nuxtApp.$config.auth
+      const config = useRuntimeConfig().public.auth
       const { path, method } = config.provider.endpoints.refresh
 
       const response = await _fetch<Record<string, any>>(nuxtApp, path, {
